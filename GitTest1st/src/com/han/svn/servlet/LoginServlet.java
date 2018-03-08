@@ -29,6 +29,8 @@ public class LoginServlet extends HttpServlet {
 		// TODO Auto-generated method stub 这是 在GitHub上做的修改
 		
 		// 增加一条注释语句
+		
+		// 用GitHub增加一条
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
