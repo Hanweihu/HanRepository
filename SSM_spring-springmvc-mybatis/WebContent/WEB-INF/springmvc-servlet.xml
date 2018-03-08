@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        				   http://www.springframework.org/schema/beans/spring-beans.xsd
+        				   http://www.springframework.org/schema/aop
+        				   http://www.springframework.org/schema/aop/spring-aop.xsd
+        				   http://www.springframework.org/schema/tx 
+        				   http://www.springframework.org/schema/tx/spring-tx.xsd
+        				   http://www.springframework.org/schema/context 
+        				   http://www.springframework.org/schema/context/spring-context.xsd
+        				   http://www.springframework.org/schema/mvc 
+        				   http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <!-- 1.配置扫描使用注解的类所在的包 -->
+    <context:component-scan base-package="com.hanweihu" />
+    
+    <!-- 2.mvc:annotation-driven同时创建了
+		 RequestMappingHandlerMapping、RequestMappingHandlerAdapter对象
+		   并提供了JSON的支持  -->
+    <mvc:annotation-driven/>    
+       				   
+	<!-- 3.配置sprigmvc视图解析器：解析逻辑视图 
+		  后台返回逻辑视图：index 
+		  视图解析器解析出真正物理视图：前缀+逻辑试图+后缀====/WEB-INF/jsps/index.jsp -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	
+	<!-- 4.文件上传解析器 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="10240000"></property>
+	</bean>
+</beans>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace：命名空间，对statement的信息进行分类管理 -->
+<!-- 注意：在mapper代理时，命名空间必须与mapper接口 一致 -->
+<mapper namespace="com.hanweihu.SSM.mapper.ItemsMapper">
+
+	<!-- 添加商品 -->
+	<insert id="addItems" parameterType="com.hanweihu.SSM.pojo.Items">
+		INSERT INTO items(name,price,pic,createtime,detail)
+		VALUES (#{name},#{price},#{pic},#{createtime},#{detail})
+	</insert>
+	
+	<!-- 查询商品列表 -->
+	<select id="showItemsList" resultType="com.hanweihu.SSM.pojo.Items">
+		SELECT * FROM items
+	</select>
+	
+	<!-- 根据id批量删除商品 -->
+	<delete id="deleteByIds" parameterType="java.lang.Integer">
+		DELETE FROM items 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 根据id删除单个商品 -->
+	<delete id="deleteOneById" parameterType="java.lang.Integer">
+		DELETE FROM items 
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 根据id查询商品 -->
+	<select id="selectByID" resultType="com.hanweihu.SSM.pojo.Items" parameterType="java.lang.Integer">
+		SELECT * FROM items WHERE id = #{id}
+	</select>
+	
+	<!-- 根据id修改单个商品 -->
+	<update id="updateOne" parameterType="com.hanweihu.SSM.pojo.Items">
+		UPDATE items SET name=#{name},price=#{price},detail=#{detail},createtime=#{createtime} 
+		WHERE id = #{id}
+	</update>
+</mapper>
+<!--
+	 ${}和#{}的区别：
+	 #{}表示一个占位符，相当于原生态JDBC中PreparedStatement语句中的“？”占位符
+	 ${}表示一个sql连接符，相当于原生态JDBC中Statement语句中的“+”占位符
+ -->

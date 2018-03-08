@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        				   http://www.springframework.org/schema/beans/spring-beans.xsd
+        				   http://www.springframework.org/schema/aop
+        				   http://www.springframework.org/schema/aop/spring-aop.xsd
+        				   http://www.springframework.org/schema/tx 
+        				   http://www.springframework.org/schema/tx/spring-tx.xsd
+        				   http://www.springframework.org/schema/context 
+        				   http://www.springframework.org/schema/context/spring-context.xsd">
+	<!-- 1.配置数据源 -->
+	<context:property-placeholder location="classpath:db.properties"/>
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="jdbcUrl" value="${jdbc.url}"></property>
+		<property name="driverClass" value="${jdbc.driver}"></property>
+		<property name="user" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean>
+	
+	<!-- 2.配置MyBatis的核心sqlSessionFactory。生产sqlSession -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+	</bean>
+	
+	<!-- 3.配置mybatis接口代理
+		* 接口类名和映射文件必须同名
+		* 接口类和映射文件必须在同一个目录下
+		* 映射文件namespace名字必须是接口的全类路径名
+		* 接口的方法名必须和映射Statement的id一致  -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+		<property name="basePackage" value="com.hanweihu.SSM.mapper" />
+	</bean>
+	
+	<!-- 4.配置事务 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	    <property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<!-- 支持事务注解 ，前提： id="transactionManager"-->
+	<tx:annotation-driven/>
+</beans>
